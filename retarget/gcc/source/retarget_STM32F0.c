@@ -1,18 +1,19 @@
-#include "UART_STM32F0.h"
+#include "retarget_STM32F0.h"
 #include "stm32f0xx.h"
-void sendchar(char c){
+
+void UART2_sendChar(char c){
 	USART_SendData(USART2,c);
 	while(USART_GetFlagStatus(USART2,USART_FLAG_TXE)==0);
 	//delay(0x1000);
 }
 
-char getkey(void){
+char UART2_getChar(void){
 	while(USART_GetFlagStatus(USART2,USART_FLAG_RXNE)==0);
 	return USART_ReceiveData(USART2);
 }
 
 
-void configureUART2(void){
+void UART2_init(int baudrate){
 	GPIO_InitTypeDef GPIO_InitStructure;
 	USART_InitTypeDef USART_InitStructure;
 	
@@ -34,7 +35,7 @@ void configureUART2(void){
 	GPIO_PinAFConfig(GPIOA,GPIO_PinSource2,GPIO_AF_1);
 	GPIO_PinAFConfig(GPIOA,GPIO_PinSource3,GPIO_AF_1);
 	
-	USART_InitStructure.USART_BaudRate=115200;
+	USART_InitStructure.USART_BaudRate=baudrate;
 	USART_InitStructure.USART_WordLength=USART_WordLength_8b;
 	USART_InitStructure.USART_StopBits=USART_StopBits_1;
 	USART_InitStructure.USART_Parity=USART_Parity_No;

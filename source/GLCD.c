@@ -24,11 +24,11 @@
 #define   CLEAR_BIT         0x0E
 #define   SET_BIT            0x0F
 unsigned short j,i;
-unsigned char cursor_last_y=1;      // guarda la posición actual del cursor en el eje y
+unsigned char cursor_last_y=1;      // guarda la posiciï¿½n actual del cursor en el eje y
 unsigned char operation_mode;
 
 #ifdef USE_BUFFER
-unsigned char pixel_buffer[1600];   // declaración del buffer interno de escritura
+unsigned char pixel_buffer[1600];   // declaraciï¿½n del buffer interno de escritura
 #endif
 
 // CARACTERES IMPRIMIBLES EN MODO GRAFICO
@@ -150,7 +150,7 @@ void put_data_on_glcd_pins(char data)
 /////////////////////////////////////////////////////////////////////////////////
 //   Escribe en un registro interno del GLCD
 //
-//   @param   reg - dirección del registro al que se escribirá
+//   @param   reg - direcciï¿½n del registro al que se escribirï¿½
 //         data - byte a escribir en el registro
 //   @return   -
 //
@@ -163,11 +163,11 @@ void glcd_send_command(char reg,char data)
 }
 
 //////////////////////////////////////////////////////////////////////////////
-//   Manda la dirección de uno de los 1600 bytes que conforman la pantalla 
+//   Manda la direcciï¿½n de uno de los 1600 bytes que conforman la pantalla 
 //   en modo grafico, cada fila se compone de 20 bytes y son 80 filas. La
-//   primer dirección comienza en 0.
+//   primer direcciï¿½n comienza en 0.
 //
-//   @param   address - dirección de 16 bits.
+//   @param   address - direcciï¿½n de 16 bits.
 //   @return -
 //
 void glcd_go_address(short address)
@@ -181,9 +181,9 @@ void glcd_go_address(short address)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//   Escribe la dirección del registro de escritura, y todos los bytes que le
-//   sigan con la señal GLCD_RS=0 se mostrarán en la pantalla, al escribir un
-//   nuevo byte, la dirección de memoria aumenta en 1, con lo que se pueden
+//   Escribe la direcciï¿½n del registro de escritura, y todos los bytes que le
+//   sigan con la seï¿½al GLCD_RS=0 se mostrarï¿½n en la pantalla, al escribir un
+//   nuevo byte, la direcciï¿½n de memoria aumenta en 1, con lo que se pueden
 //   escribir de corrido los 1600 bytes que conforman la memoria en forma serial.
 //
 //   @param    -
@@ -197,7 +197,7 @@ void glcd_command_write()
 
 /////////////////////////////////////////////////////////////////////////////////
 //   Manda un byte al GLCD, este comando sirve para mandar los bytes a imprimir
-//   en la pantalla utilizando una unica vez al comienzo, la función
+//   en la pantalla utilizando una unica vez al comienzo, la funciï¿½n
 //   glcd_command_write(), posteriormente se pueden enviar tantos bytes se requiera
 //   imprimir en pantalla.
 //
@@ -212,7 +212,7 @@ void glcd_send_byte(char data)
 
 //////////////////////////////////////////////////////////////////////////////
 //   Carga el contenido del buffer de escritura en la pantalla, solamente se
-//   procesa esta función si se ha descomentado al inicio #define USE_BUFFER 1
+//   procesa esta funciï¿½n si se ha descomentado al inicio #define USE_BUFFER 1
 //
 //   @param   -
 //   @return   -
@@ -265,14 +265,14 @@ void glcd_gotoxy(char x,char y)
       // divide el short en dos bytes
       MSB_address=(char)address>>8;
       LSB_address=(char)address;
-      glcd_send_command(CURSOR_LOW_ADD,LSB_address);   // registro de posición del cursor en memoria LSB
-      glcd_send_command(CURSOR_HIGH_ADD,MSB_address);   // registro de posición del cursor en memoria MSB
+      glcd_send_command(CURSOR_LOW_ADD,LSB_address);   // registro de posiciï¿½n del cursor en memoria LSB
+      glcd_send_command(CURSOR_HIGH_ADD,MSB_address);   // registro de posiciï¿½n del cursor en memoria MSB
    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
 //   NOTA: FUNCION VALIDA SOLO EN MODO DE CARACTERES
-//   Imprime caracteres en la pantalla, su funcionamiento es igual a la función
+//   Imprime caracteres en la pantalla, su funcionamiento es igual a la funciï¿½n
 //   lcd_putc de los LCD alfanumericos.
 //
 //   @param   data - caracter o apuntador a cadena de caracteres a imprimir en el GLCD
@@ -286,13 +286,13 @@ void glcd_putc(char data)
       switch(data)
       {
          case '\f':
-            // Manda el cursor a la primera posición de memoria
+            // Manda el cursor a la primera posiciï¿½n de memoria
             glcd_gotoxy(1,1);
             for(i=0;i<280;i++)   // ciclo para borrar pantalla
             {
                glcd_send_command(WRITE_GLCD,data);
             }
-            // Manda el cursor a la primera posición de memoria
+            // Manda el cursor a la primera posiciï¿½n de memoria
             glcd_gotoxy(1,1);
             break;
          case '\n':
@@ -338,7 +338,7 @@ void glcd_putc(char data)
 //
 void glcd_pixel(unsigned short x,unsigned short y,unsigned char color)
 {
-   if(x<=160&&y<=80&&x>0&&y>0)   // solo grafica si las coordenadas están dentro del rango
+   if(x<=160&&y<=80&&x>0&&y>0)   // solo grafica si las coordenadas estï¿½n dentro del rango
    {
       unsigned short eje_x;
       unsigned short eje_y;
@@ -347,14 +347,14 @@ void glcd_pixel(unsigned short x,unsigned short y,unsigned char color)
 
       eje_y=(y-1)*20;      // obtiene el valor de la fila
       eje_x=(x-1)/8;      // obtiene el valor de la columna
-      address=eje_x+eje_y;   // obtiene el número de byte
+      address=eje_x+eje_y;   // obtiene el nï¿½mero de byte
       
       #ifdef USE_BUFFER
-      bit_number=(x-1)%8;   // obtiene la posición del bit
+      bit_number=(x-1)%8;   // obtiene la posiciï¿½n del bit
       if(color==OFF&&address<=1600) bit_clear(pixel_buffer[address],bit_number);
       if(color==ON&&address<=1600) bit_set(pixel_buffer[address],bit_number);
       #else
-      bit_number=8-(x-1)%8;   // obtiene la posición del bit
+      bit_number=8-(x-1)%8;   // obtiene la posiciï¿½n del bit
       glcd_go_address(address);
       if(color==OFF) glcd_send_command(CLEAR_BIT,abs(bit_number-8));   // registro limpiar un bit
       else glcd_send_command(SET_BIT,abs(bit_number-8));            // registro setear un bit
@@ -363,7 +363,7 @@ void glcd_pixel(unsigned short x,unsigned short y,unsigned char color)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
-//   Dibuja una línea en el GLCD o el buffer, usando el algoritmo de Bresenham
+//   Dibuja una lï¿½nea en el GLCD o el buffer, usando el algoritmo de Bresenham
 //
 //   @param   (x1, y1) - coordenadas de inicio
 //          (x2, y2) - coordenadas finales
@@ -434,12 +434,12 @@ void glcd_line(signed short x1, signed short y1, signed short x2, signed short y
 }
 
 //////////////////////////////////////////////////////////////////////////////////
-//   Dibuja un rectángulo en el GLCD o el buffer
+//   Dibuja un rectï¿½ngulo en el GLCD o el buffer
 //    
 //   @param   (x1, y1) - coordenadas de inicio
 //        (x2, y2) - coordenadas finales
 //         fill - YES o NO, indica si tiene relleno o no
-//         color - ON or OFF, indica el color del relleno o del perímetro
+//         color - ON or OFF, indica el color del relleno o del perï¿½metro
 //   @return   -
 //
 void glcd_rect(short x1, short y1, short x2, short y2, short fill, unsigned char color)
@@ -475,7 +475,7 @@ void glcd_rect(short x1, short y1, short x2, short y2, short fill, unsigned char
 //
 //   @param   (x1, y1) - coordenadas de inicio
 //        (x2, y2) - coordenadas finales
-//         width  - El número de pixeles de ancho
+//         width  - El nï¿½mero de pixeles de ancho
 //         color - ON or OFF, color de la barra
 //   @return   -
 //
@@ -564,7 +564,7 @@ void glcd_bar(short x1, short y1, short x2, short y2, short width, unsigned char
 //   @param   (x,y) - coordenadas del centro del circulo
 //         radius - radio del circulo en pixeles
 //         fill - YES or NO, si tiene relleno o no
-//         color - ON or OFF, color del relleno o del perímetro
+//         color - ON or OFF, color del relleno o del perï¿½metro
 //   @return   -
 //
 void glcd_circle(short x, short y, short radius, unsigned char fill, unsigned char color)
@@ -612,7 +612,7 @@ unsigned char bit_test(char byteToTest, int bitPos){
 }
 
 //////////////////////////////////////////////////////////////////////////////////
-//   Escribe texto en el GLCD en modo gráfico
+//   Escribe texto en el GLCD en modo grï¿½fico
 //
 //   @param   (x,y) - coordenada superior izquierda del primer caracter
 //         textptr - puntero a una cadena de caracteres en memoria
@@ -681,11 +681,11 @@ void glcd_fill_screen(unsigned char color)
 }
 
 //////////////////////////////////////////////////////////////////////////////////
-//   Inicializa la pantalla en modo gráfico o alfanumerico, debe ser llamada antes 
+//   Inicializa la pantalla en modo grï¿½fico o alfanumerico, debe ser llamada antes 
 //   de cualquier otra funcion
 //
 //   @param   mode:    CHARACTER    - inicializa el GLCD en modo de caracteres
-//               GRAPHIC      - inicializa el GLCD en modo gráfico
+//               GRAPHIC      - inicializa el GLCD en modo grï¿½fico
 //   @return   -
 //
 void glcd_init(unsigned char mode)  
@@ -700,7 +700,7 @@ void glcd_init(unsigned char mode)
    else
    {
       operation_mode=CHARACTER;
-      config_byte&=0xFD;//0b11111101;   // configura modo alfanumérico
+      config_byte&=0xFD;//0b11111101;   // configura modo alfanumï¿½rico
       #ifdef GLCD_CURSOR_ON
       config_byte|=0x04;//0b00000100;   // configura cursor ON
       #else
@@ -722,7 +722,7 @@ void glcd_init(unsigned char mode)
    glcd_send_command(MODE_CONTROL,config_byte);         // escribe en registro de control
 
    if(operation_mode==CHARACTER) glcd_send_command(CHAR_PITCH,0x75/*0b01110101*/);   // ancho de caracter (6 puntos)
-   else glcd_send_command(CHAR_PITCH,0x07/*0b00000111*/);   // número de bits por byte (8 puntos)
+   else glcd_send_command(CHAR_PITCH,0x07/*0b00000111*/);   // nï¿½mero de bits por byte (8 puntos)
 
    if(operation_mode==CHARACTER) glcd_send_command(NUM_CHAR,26);   // caracteres
    else glcd_send_command(NUM_CHAR,19);   // bytes
@@ -730,10 +730,10 @@ void glcd_init(unsigned char mode)
    glcd_send_command(TIME_DIV,DIVISION_NUMBER);         // registro velocidad de refresco
    
    if(operation_mode==CHARACTER) glcd_send_command(CURSOR_POS,CURSOR_HEIGHT);
-   else glcd_send_command(CURSOR_POS,0x00);   // no aplica para modo gráfico
+   else glcd_send_command(CURSOR_POS,0x00);   // no aplica para modo grï¿½fico
    
-   glcd_send_command(START_LOW_ADD,0);         // registro posición de inicio LSB
-   glcd_send_command(START_HIGH_ADD,0);      // registro posición de inicio MSB
+   glcd_send_command(START_LOW_ADD,0);         // registro posiciï¿½n de inicio LSB
+   glcd_send_command(START_HIGH_ADD,0);      // registro posiciï¿½n de inicio MSB
    
    // limpia la pantalla
    if(operation_mode==GRAPHIC){
