@@ -14,9 +14,9 @@ void delay_raw(unsigned int delay_time){
 }
 
 void delay_ms(unsigned int ms){
-	delay_raw(((SystemCoreClock/1000)*ms)/6);
+	delay_raw(((SystemCoreClock/1000)*ms)/18);
 }
 
 void delay_us(unsigned int ms){
-	delay_raw(((SystemCoreClock/1000000)*ms)/6);
+	delay_raw(((SystemCoreClock/1000000)*ms)/18);
 }
