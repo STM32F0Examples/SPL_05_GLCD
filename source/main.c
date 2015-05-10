@@ -13,11 +13,26 @@ int main(void)
 {
 	setToMaxSpeed();
 	UART2_init(9600);
+	configure_delay();
+	configure_delay();
 	serial_printf(UART2_serial,"\nSystem ready\n");
 	serial_printf(UART2_serial,"$ ");
-	glcd_init(CHARACTER);
-	serial_printf(GLCD_serial,"\fHola mundo");
 	while(1){
+		glcd_init(CHARACTER);
+		serial_printf(GLCD_serial,"\fGLCD ready!");
+		delay_ms(1000);
+		for(int i=0 ; i<10; i++){
+			serial_printf(GLCD_serial,"\fu=%d",i);
+			serial_printf(GLCD_serial,"\nd=%d",i*10);
+			serial_printf(GLCD_serial,"\nc=%d",i*100);
+			delay_ms(250);
+		}
+		glcd_init(GRAPHIC);
+		glcd_fill_screen(ON);
+		for(int i = 0; i < 120; i+=3){
+			glcd_circle(80,40,i,YES,OFF);
+			glcd_load_buffer();
+		}
 	}
 }
 
